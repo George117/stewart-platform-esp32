@@ -73,7 +73,7 @@ Hexapod_Nunchuck::Hexapod_Nunchuck() : Accessory()
  */
 void Hexapod_Nunchuck::stopIfNotConnected()
 {
-    if (digitalRead(NUNCHUCK_ATT_PIN))
+    if (true /*digitalRead(NUNCHUCK_ATT_PIN)*/)
         return;
 
     Serial.println(F(

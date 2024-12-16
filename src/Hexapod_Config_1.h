@@ -40,11 +40,11 @@ const int SERVO_MAX_PWM = 467;
  * Offset values in µs to compensate for arm angle errors.
  */
 const int PW_OFFSET[] = {
+    -12,
     0,
-    0,
-    0,
-    0,
-    0,
+    5,
+    10,
+    -10,
     0};
 
 /*
