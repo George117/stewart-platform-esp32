@@ -425,3 +425,124 @@ void Hexapod_Demo::findMinMax()
     Serial.print(timeToFindMinMax);
     Serial.println(" ms");
 }
+
+/**
+ *
+ */
+void Hexapod_Demo::demoMov_ShowAllAxes()
+{
+     uint8_t movOK = 0;
+
+    // X
+    for(double pos=HOME; pos<=X_RAN; pos++){
+        movOK = hx_servo.calcServoAngles({pos, 0, 0, 0, 0, 0}, servo_angles);
+        hx_servo.updateServos(movOK);   
+        delay(10); 
+    }
+    for(double pos=X_RAN; pos>=-X_RAN; pos--){
+        movOK = hx_servo.calcServoAngles({pos, 0, 0, 0, 0, 0}, servo_angles);
+        hx_servo.updateServos(movOK);   
+        delay(10); 
+    }
+    for(double pos=-X_RAN; pos<=HOME; pos++){
+        movOK = hx_servo.calcServoAngles({pos, 0, 0, 0, 0, 0}, servo_angles);
+        hx_servo.updateServos(movOK);   
+        delay(10); 
+    }
+    delay(1000); 
+
+
+    // Y
+    for(double pos=HOME; pos<=Y_RAN; pos++){
+        movOK = hx_servo.calcServoAngles({0, pos, 0, 0, 0, 0}, servo_angles);
+        hx_servo.updateServos(movOK);   
+        delay(10); 
+    }
+    for(double pos=Y_RAN; pos>=-Y_RAN; pos--){
+        movOK = hx_servo.calcServoAngles({0, pos, 0, 0, 0, 0}, servo_angles);
+        hx_servo.updateServos(movOK);   
+        delay(10); 
+    }
+    for(double pos=-Y_RAN; pos<=HOME; pos++){
+        movOK = hx_servo.calcServoAngles({0, pos, 0, 0, 0, 0}, servo_angles);
+        hx_servo.updateServos(movOK);   
+        delay(10); 
+    }
+    delay(1000); 
+ 
+
+    // Z
+    for(double pos=HOME; pos<=Z_RAN; pos++){
+        movOK = hx_servo.calcServoAngles({0, 0, pos, 0, 0, 0}, servo_angles);
+        hx_servo.updateServos(movOK);   
+        delay(10); 
+    }
+    for(double pos=Z_RAN; pos>=-Z_RAN; pos--){
+        movOK = hx_servo.calcServoAngles({0, 0, pos, 0, 0, 0}, servo_angles);
+        hx_servo.updateServos(movOK);   
+        delay(10); 
+    }
+    for(double pos=-Z_RAN; pos<=HOME; pos++){
+        movOK = hx_servo.calcServoAngles({0, 0, pos, 0, 0, 0}, servo_angles);
+        hx_servo.updateServos(movOK);   
+        delay(10); 
+    }
+    delay(1000); 
+
+
+    // Roll
+    for(double pos=HOME; pos<=ROLL_RAN; pos++){
+        movOK = hx_servo.calcServoAngles({0, 0, 0, pos*0.017453, 0, 0}, servo_angles);
+        hx_servo.updateServos(movOK);   
+        delay(10); 
+    }
+    for(double pos=ROLL_RAN; pos>=-ROLL_RAN; pos--){
+        movOK = hx_servo.calcServoAngles({0, 0, 0, pos*0.017453, 0, 0}, servo_angles);
+        hx_servo.updateServos(movOK);   
+        delay(10); 
+    }
+    for(double pos=-ROLL_RAN; pos<=HOME; pos++){
+        movOK = hx_servo.calcServoAngles({0, 0, 0, pos*0.017453, 0, 0}, servo_angles);
+        hx_servo.updateServos(movOK);   
+        delay(10); 
+    }
+    delay(1000); 
+ 
+
+    // Pitch
+    for(double pos=HOME; pos<=PITCH_RAN; pos++){
+        movOK = hx_servo.calcServoAngles({0, 0, 0, 0, pos*0.017453, 0}, servo_angles);
+        hx_servo.updateServos(movOK);   
+        delay(10); 
+    }
+    for(double pos=PITCH_RAN; pos>=-PITCH_RAN; pos--){
+        movOK = hx_servo.calcServoAngles({0, 0, 0, 0, pos*0.017453, 0}, servo_angles);
+        hx_servo.updateServos(movOK);   
+        delay(10); 
+    }
+    for(double pos=-PITCH_RAN; pos<=HOME; pos++){
+        movOK = hx_servo.calcServoAngles({0, 0, 0, 0, pos*0.017453, 0}, servo_angles);
+        hx_servo.updateServos(movOK);   
+        delay(10); 
+    }
+    delay(1000); 
+
+
+    //Yaw
+    for(double pos=HOME; pos<=YAW_RAN; pos++){
+        movOK = hx_servo.calcServoAngles({0, 0, 0, 0, 0, pos*0.017453}, servo_angles);
+        hx_servo.updateServos(movOK);   
+        delay(10); 
+    }
+    for(double pos=YAW_RAN; pos>=-YAW_RAN; pos--){
+        movOK = hx_servo.calcServoAngles({0, 0, 0, 0, 0, pos*0.017453}, servo_angles);
+        hx_servo.updateServos(movOK);   
+        delay(10); 
+    }
+    for(double pos=-YAW_RAN; pos<=HOME; pos++){
+        movOK = hx_servo.calcServoAngles({0, 0, 0, 0, 0, pos*0.017453}, servo_angles);
+        hx_servo.updateServos(movOK);   
+        delay(10); 
+    }
+    delay(1000); 
+}

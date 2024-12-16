@@ -29,6 +29,7 @@ public:
     void demoMov_MinMaxAllAxis();
     void demoMov_circles(uint8_t nb_turn);
     void demoMov_shakeHeave();
+    void demoMov_ShowAllAxes();
     void testNaN();
     void testCalculations();
     void testCalcSpeed();

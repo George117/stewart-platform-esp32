@@ -57,8 +57,13 @@ void setup()
     hx_nunchuck.setupNunchuck();
 #endif
 
-    hx_demo.demoMov_circles(DEMO_CIRCLES_NB_TURN);
-    
+#if not DEMO_SHOW_AXES
+   hx_demo.demoMov_circles(DEMO_CIRCLES_NB_TURN);
+#endif
+
+#if DEMO_SHOW_AXES
+   hx_demo.demoMov_ShowAllAxes();
+#endif
     // Go to home position.
     uint8_t movOK = hx_servo.calcServoAngles({0, 0, 0, 0, 0, 0}, servo_angles);
     hx_servo.updateServos(movOK);
@@ -80,8 +85,8 @@ void setup()
  */
 void loop()
 {
-digitalWrite(DEBUG_PIN_1, LOW);
-digitalWrite(DEBUG_PIN_1, HIGH);
+    digitalWrite(DEBUG_PIN_1, LOW);
+    digitalWrite(DEBUG_PIN_1, HIGH);
 
 #if ENABLE_NUNCHUCK_READ
     hx_nunchuck.stopIfNotConnected();

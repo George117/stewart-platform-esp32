@@ -137,6 +137,25 @@ const double ARM_LENGTH = 15.0;          // Servo arm length (mm). Distance from
 const double ROD_LENGTH = 140.0;         // Push rod length (mm). Distance between pushrod ball joints (servo to platform).
 const double Z_HOME = -132.943591247488; // Default Z height of the platform (above the base), with servo arms horizontal. Formally, the distance from the plane described by the collection of servo pinion gear centers, to the plane described by the collection of platform / pushrod joints. Must Be fine tuned manualy or computed with a numerical solver.
 
+
+/**
+ * x[mm]     : -35 : 35
+ * y[mm]     : -35 : 35
+ * z[mm]     : -12 : 12
+ * roll[deg] : -15 : 15
+ * pitch[deg]: -15 : 15
+ * yaw[deg]  : -40 : 40
+ *hx_servo.calcServoAngles({x[mm], y[mm], z[mm], roll[rad], pitch[rad], yaw[rad]}
+ */
+
+#define HOME        0
+#define X_RAN       35
+#define Y_RAN       35
+#define Z_RAN       12
+#define ROLL_RAN    15
+#define PITCH_RAN   15
+#define YAW_RAN     40
+
 /*
  * ======== ALGORITHM FOR SERVO ANGLE CALCULATIONS ========
  */
