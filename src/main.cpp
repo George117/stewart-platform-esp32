@@ -30,14 +30,7 @@
 #include <Hexapod_Kinematics.h>
 #include <Hexapod_Serial.h>
 #include <Hexapod_Servo.h>
-#include <Hexapod_imu.h>
-#include <Hexapod_WebServerApp.h>
 
-AsyncWebSocket ws("/ws");
-AsyncWebServer server(80);
-AsyncEventSource events("/events");
-
-IMU imu1;
 
 const unsigned short fifoRate = 20U; // IMU refresh rate in Hz.
 
@@ -64,14 +57,8 @@ void setup()
     hx_nunchuck.setupNunchuck();
 #endif
 
-#if ENABLE_IMU_READ
-    scanNetwork();
-    setupWebServer();
-    imu1.setupIMU(fifoRate);
-#endif
-
     hx_demo.demoMov_circles(DEMO_CIRCLES_NB_TURN);
-
+    
     // Go to home position.
     uint8_t movOK = hx_servo.calcServoAngles({0, 0, 0, 0, 0, 0}, servo_angles);
     hx_servo.updateServos(movOK);
@@ -103,46 +90,5 @@ digitalWrite(DEBUG_PIN_1, HIGH);
 
 #if ENABLE_SERIAL_READ
     hx_serial.serialRead();
-#endif
-
-#if ENABLE_IMU_READ
-    static unsigned long T1 = millis();
-    if ((millis() - T1) < (1000 / fifoRate))
-        return;
-    T1 = millis();
-
-    ArduinoOTA.handle();
-
-    if (!ws.enabled())
-    {
-        Serial.println("NO WebSocket!");
-        return;
-    }
-
-    // Read IMU.
-    static unsigned short status;
-    static char jsonMsg[200];
-    status = imu1.readIMU(jsonMsg);
-    ws.textAll(jsonMsg);
-    if (status != 0)
-        Serial.println(jsonMsg);
-
-    euler_angles_t eulerAngles = imu1.getEulerAngles();
-    euler_angles_t angles = {
-        (eulerAngles.eA - 180) * DEG_TO_RAD,
-        (eulerAngles.eB - 360) * DEG_TO_RAD,
-        (eulerAngles.eC - 120) * DEG_TO_RAD,
-    };
-    Serial.print(angles.eA);
-    Serial.print(" ");
-    Serial.print(angles.eB);
-    Serial.print(" ");
-    Serial.print(angles.eC);
-    Serial.print("\n");
-
-    // X, Y, tilt X, tilt Y
-    int8_t movOK = hx_servo.calcServoAngles({0, 0, 0, angles.eA, angles.eB, angles.eC},
-                                            servo_angles);
-    hx_servo.updateServos(movOK);
 #endif
 }

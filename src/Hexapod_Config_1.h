@@ -140,4 +140,4 @@ const double Z_HOME = -132.943591247488; // Default Z height of the platform (ab
 /*
  * ======== ALGORITHM FOR SERVO ANGLE CALCULATIONS ========
  */
-#define ALGO 3
+#define ALGO 2
