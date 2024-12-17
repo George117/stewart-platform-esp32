@@ -23,14 +23,14 @@
 #include <Arduino.h>
 #include <Hexapod_Servo.h>
 
-#define MAX_BUF 64 // Serial buffer size
+#define MAX_BUF 13 // Serial buffer size
 
 class Hexapod_Serial
 {
 private:
     char buffer[MAX_BUF];          // where we store the message until we get a ';'
     int sofar = 0;                 // how much is in the buffer
-    double px, py, pz, pa, pb, pc; // positions
+    unsigned int x_axis, y_axis, z_axis, roll, pitch, yaw; // positions
     char mode_abs = 1;             // absolute mode?
     long line_number = 0;
 
@@ -38,12 +38,6 @@ private:
     void processCommand();
     double parseNumber(const char code, double val);
     void output(const char code, double val);
-    void G0(double newx, double newy, double newz, double newa, double newb, double newc);
-    void G4P(double seconds);
-    void G90();
-    void G91();
-    void M100();
-    void M114();
 
 public:
     Hexapod_Serial();

@@ -50,72 +50,6 @@ void Hexapod_Serial::setupSerial()
 }
 
 /**
- *
- **/
-void Hexapod_Serial::G0(double newx, double newy, double newz,
-                        double newa, double newb, double newc)
-{
-    px = newx;
-    py = newy;
-    pz = newz;
-    pa = newa;
-    pb = newb;
-    pc = newc;
-
-    static int8_t movOK;
-    movOK = -1;
-    movOK = hx_servo.calcServoAngles(
-        {px, py, pz, radians(pa), radians(pb), radians(pc)},
-        servo_angles);
-    hx_servo.updateServos(movOK, 0UL);
-
-    M114();
-}
-
-/**
- * Pause (dwell)
- * This will keep the axes unmoving for the period of time in seconds
- * specified by the P number. It is an error if the P number is negative.
- */
-void Hexapod_Serial::G4P(double seconds)
-{
-    if (seconds >= 0.001)
-        delay(seconds * 1000);
-    else
-        delayMicroseconds(seconds * 1000000);
-}
-
-/**
- *
- */
-void Hexapod_Serial::G90()
-{
-    mode_abs = 1;
-}
-
-/**
- *
- */
-void Hexapod_Serial::G91()
-{
-    mode_abs = 0;
-}
-
-/**
- * Print the current coordinates and absolute mode.
- */
-void Hexapod_Serial::M114()
-{
-    output('X', px);
-    output('Y', py);
-    output('Z', pz);
-    output('A', pa);
-    output('B', pb);
-    output('C', pc);
-    Serial.println(mode_abs ? "ABS" : "REL");
-}
-
-/**
  * write a string followed by a double to the serial line.  Convenient for debugging.
  * @input code the string.
  * @input val the double.
@@ -133,58 +67,7 @@ void Hexapod_Serial::output(const char code, double val)
  */
 void Hexapod_Serial::processCommand()
 {
-    int cmd = parseNumber('G', -1);
-    switch (cmd)
-    {
-
-    // G0 [X/Y/Z/A/B/C]; - Rapid linear motion. X, Y, Z in mm | A, B, C in degrees.
-    case 0:
-    {
-        G0(parseNumber('X', (mode_abs ? px : 0)) + (mode_abs ? 0 : px),
-           parseNumber('Y', (mode_abs ? py : 0)) + (mode_abs ? 0 : py),
-           parseNumber('Z', (mode_abs ? pz : 0)) + (mode_abs ? 0 : pz),
-           parseNumber('A', (mode_abs ? pa : 0)) + (mode_abs ? 0 : pa),
-           parseNumber('B', (mode_abs ? pb : 0)) + (mode_abs ? 0 : pb),
-           parseNumber('C', (mode_abs ? pb : 0)) + (mode_abs ? 0 : pc));
-        break;
-    }
-
-    // G4 P[seconds]; - Pause (dwell) in seconds.
-    case 4:
-        G4P(parseNumber('P', 0));
-        break;
-
-    // G90; - Go into absolute distance mode.
-    case 90:
-        G90();
-        break;
-
-    // G91; - Go into relative distance mode.
-    case 91:
-        G91();
-        break;
-
-    default:
-        break;
-    }
-
-    cmd = parseNumber('M', -1);
-    switch (cmd)
-    {
-
-    // M100 | Print help message.
-    case 100:
-        M100();
-        break;
-
-    // M114 | Print current coordinates.
-    case 114:
-        M114();
-        break;
-
-    default:
-        break;
-    }
+    return;
 }
 
 /**
@@ -207,22 +90,6 @@ double Hexapod_Serial::parseNumber(const char code, double val)
     return val; // end reached, nothing found, return default val.
 }
 
-/**
- * display helpful information
- */
-void Hexapod_Serial::M100()
-{
-    Serial.print(F("# HEXAPOD G-CODE PARSER #"));
-    Serial.println(PROJECT_VERSION);
-    Serial.println(F("## COMMANDS ##"));
-    Serial.println(F("// G0 [X/Y/Z/A/B/C]; - Rapid linear motion. X, Y, Z in mm | A, B, C in degrees."));
-    Serial.println(F("G4 P[seconds]; - Pause (dwell) in seconds"));
-    Serial.println(F("G90; - absolute mode"));
-    Serial.println(F("G91; - relative mode"));
-    Serial.println(F("M100; - this help message"));
-    Serial.println(F("M114; - report position"));
-    Serial.println(F("All commands must end with a newline."));
-}
 
 /**
  *
@@ -238,9 +105,36 @@ void Hexapod_Serial::serialRead()
         {
             // End the buffer so string functions work right.
             buffer[sofar] = 0;
-            Serial.print(F("\r\n"));
-            processCommand();
-            ready();
+
+            x_axis = (buffer[0]<<8) | (buffer[1]);
+            y_axis = (buffer[2]<<8) | (buffer[3]);
+            z_axis = (buffer[4]<<8) | (buffer[5]);
+            roll = (buffer[6]<<8) | (buffer[7]);
+            pitch = (buffer[8]<<8) | (buffer[9]);
+            yaw = (buffer[10]<<8) | (buffer[11]);
+
+
+            char str[20];
+            sprintf(str, "%04x", x_axis);
+            Serial.println(str);
+
+            sprintf(str, "%04x", y_axis);
+            Serial.println(str);
+
+            sprintf(str, "%04x", z_axis);
+            Serial.println(str);
+
+            sprintf(str, "%04x", roll);
+            Serial.println(str);
+
+            sprintf(str, "%04x", pitch);
+            Serial.println(str);
+
+            sprintf(str, "%04x", yaw);
+            Serial.println(str);
+
+            memset(buffer, '0', sizeof(buffer));
+            sofar = 0;
         }
     }
 }
