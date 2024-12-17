@@ -23,9 +23,6 @@
 #include <PCA9685.h>
 #include <WiiChuck.h>
 
-#ifdef ENABLE_IMU_READ
-    #include <Hexapod_IMU.h>
-#endif
 
 // Hexapod libs.
 #include <Hexapod_Demo.h>
@@ -34,6 +31,7 @@
 #include <Hexapod_Kinematics.h>
 #include <Hexapod_Serial.h>
 #include <Hexapod_Servo.h>
+#include <Hexapod_IMU.h>
 
 // Global variables.
 angle_t servo_angles[NB_SERVOS];
@@ -55,7 +53,7 @@ void setup()
     hx_serial.printSplashScreen();
     hx_servo.setupServo();
 
-#ifdef ENABLE_IMU_READ
+#if ENABLE_IMU_READ
     hx_imu.setupIMU();
 #endif
 
@@ -91,7 +89,9 @@ void setup()
  */
 void loop()
 {
+#if ENABLE_IMU_READ
     hx_imu.printIMU();
+#endif
 
 #if ENABLE_NUNCHUCK_READ
     hx_nunchuck.stopIfNotConnected();
