@@ -213,7 +213,7 @@ void Hexapod_Demo::testCalculations()
  */
 void Hexapod_Demo::testCalcSpeed()
 {
-    Serial.println("\n########## TEST CALCULATION SPEED ##########");
+    //Serial.println("\n########## TEST CALCULATION SPEED ##########");
     unsigned long T1 = 0, T2 = 0, TTot = 0, dT = 0, Tmin = 10000, Tmax = 0;
     const int nb_intervals = 2;
     const double divide = 3;
@@ -250,6 +250,7 @@ void Hexapod_Demo::testCalcSpeed()
             }
         }
     }
+    /*
     Serial.print("Algorithm                 = ");
     Serial.println(ALGO);
     Serial.print("nb iterations             = ");
@@ -262,6 +263,7 @@ void Hexapod_Demo::testCalcSpeed()
     Serial.println(Tmin);
     Serial.print("Tmax (us)                 = ");
     Serial.println(Tmax);
+    */
 }
 
 /**
@@ -376,7 +378,7 @@ void Hexapod_Demo::findMinMax()
     // HX_C_MID = (HX_C_MAX + HX_C_MIN) / 2;
 
     timeToFindMinMax = millis() - T1;
-
+/*
     Serial.println("\n########## MIN / MAX ##########");
 
     Serial.print("\nHX_X_MIN = ");
@@ -424,6 +426,7 @@ void Hexapod_Demo::findMinMax()
     Serial.print("\ntimeToFindMinMax = ");
     Serial.print(timeToFindMinMax);
     Serial.println(" ms");
+    */
 }
 
 /**

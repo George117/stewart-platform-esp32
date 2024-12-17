@@ -23,6 +23,10 @@
 #include <PCA9685.h>
 #include <WiiChuck.h>
 
+#ifdef ENABLE_IMU_READ
+    #include <Hexapod_IMU.h>
+#endif
+
 // Hexapod libs.
 #include <Hexapod_Demo.h>
 #include <Hexapod_GPIO.h>
@@ -31,9 +35,6 @@
 #include <Hexapod_Serial.h>
 #include <Hexapod_Servo.h>
 
-
-const unsigned short fifoRate = 20U; // IMU refresh rate in Hz.
-
 // Global variables.
 angle_t servo_angles[NB_SERVOS];
 Hexapod_Servo hx_servo; // Servo pins are defined in Hexapod_Config_`x`.h (where `x` is the file number)
@@ -41,6 +42,7 @@ Hexapod_Serial hx_serial;
 Hexapod_Nunchuck hx_nunchuck;
 Hexapod_Demo hx_demo;
 Hexapod_GPIO hx_gpio;
+Hexapod_IMU hx_imu;
 
 /**
  *
@@ -52,6 +54,10 @@ void setup()
     hx_serial.setupSerial();
     hx_serial.printSplashScreen();
     hx_servo.setupServo();
+
+#ifdef ENABLE_IMU_READ
+    hx_imu.setupIMU();
+#endif
 
 #if ENABLE_NUNCHUCK_READ
     hx_nunchuck.setupNunchuck();
@@ -85,8 +91,7 @@ void setup()
  */
 void loop()
 {
-    digitalWrite(DEBUG_PIN_1, LOW);
-    digitalWrite(DEBUG_PIN_1, HIGH);
+    hx_imu.printIMU();
 
 #if ENABLE_NUNCHUCK_READ
     hx_nunchuck.stopIfNotConnected();
