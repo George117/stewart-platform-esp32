@@ -113,28 +113,80 @@ void Hexapod_Serial::serialRead()
             pitch = (buffer[8]<<8) | (buffer[9]);
             yaw = (buffer[10]<<8) | (buffer[11]);
 
+            x_axis = (x_axis/100)-40;
+            if(x_axis > X_RAN){
+                x_axis = X_RAN;
+            }
+            if(x_axis<-X_RAN){
+                x_axis = -X_RAN;
+            }
 
-            char str[20];
-            sprintf(str, "%04x", x_axis);
+            y_axis = (y_axis/100)-40;
+            if(y_axis > Y_RAN){
+                y_axis = Y_RAN;
+            }
+            if(y_axis<-Y_RAN){
+                y_axis = -Y_RAN;
+            }
+
+
+            z_axis = (z_axis/100)-40;
+            if(z_axis > Z_RAN){
+                z_axis = Z_RAN;
+            }
+            if(z_axis<-Z_RAN){
+                z_axis = -Z_RAN;
+            }
+
+            roll = (roll/100)-40;
+            if(roll > ROLL_RAN){
+                roll = ROLL_RAN;
+            }
+            if(roll<-ROLL_RAN){
+                roll = -ROLL_RAN;
+            }
+
+            pitch = (pitch/100)-40;
+            if(pitch > PITCH_RAN){
+                pitch = PITCH_RAN;
+            }
+            if(pitch<-PITCH_RAN){
+                pitch = -PITCH_RAN;
+            }
+
+
+            yaw = (yaw/100)-40;
+            if(yaw > YAW_RAN){
+                yaw = YAW_RAN;
+            }
+            if(yaw<-YAW_RAN){
+                yaw = -YAW_RAN;
+            }
+
+             char str[20];
+            // sprintf(str, "%04d", x_axis);
+            // Serial.println(str);
+
+            // sprintf(str, "%04d", y_axis);
+            // Serial.println(str);
+
+            // sprintf(str, "%04d", z_axis);
+            // Serial.println(str);
+
+            sprintf(str, "%04d", roll);
             Serial.println(str);
 
-            sprintf(str, "%04x", y_axis);
-            Serial.println(str);
+            // sprintf(str, "%04d", pitch);
+            // Serial.println(str);
 
-            sprintf(str, "%04x", z_axis);
-            Serial.println(str);
-
-            sprintf(str, "%04x", roll);
-            Serial.println(str);
-
-            sprintf(str, "%04x", pitch);
-            Serial.println(str);
-
-            sprintf(str, "%04x", yaw);
-            Serial.println(str);
+            // sprintf(str, "%04d", yaw);
+            // Serial.println(str);
 
             memset(buffer, '0', sizeof(buffer));
             sofar = 0;
+
+            uint8_t movOK = hx_servo.calcServoAngles({x_axis, y_axis, z_axis, roll*0.017453, pitch*0.017453, yaw*0.017453}, servo_angles);
+            hx_servo.updateServos(movOK);
         }
     }
 }
