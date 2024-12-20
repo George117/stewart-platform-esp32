@@ -62,7 +62,7 @@ void setup()
 #endif
 
 #if not DEMO_SHOW_AXES
-   hx_demo.demoMov_circles(DEMO_CIRCLES_NB_TURN);
+//   hx_demo.demoMov_circles(DEMO_CIRCLES_NB_TURN);
 #endif
 
 #if DEMO_SHOW_AXES

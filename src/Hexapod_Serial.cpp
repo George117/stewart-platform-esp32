@@ -162,7 +162,7 @@ void Hexapod_Serial::printSplashScreen()
 }
 
 
-void Hexapod_Serial::scaleAndConstrain(int *value, int range) 
+void Hexapod_Serial::scaleAndConstrain(double *value, int range) 
 {
     *value = (*value / 100) - 40;
     if (*value > range) {
@@ -175,27 +175,27 @@ void Hexapod_Serial::scaleAndConstrain(int *value, int range)
 
 void Hexapod_Serial::logAxes(void)
 {
-    sprintf(str, "X: %+04d", x_axis);
+    sprintf(str, "X: %+04f", x_axis);
     Serial.println(str);
     memset(str, 0, sizeof(str));
 
-    sprintf(str, "Y: %+04d", y_axis);
+    sprintf(str, "Y: %+04f", y_axis);
     Serial.println(str);
     memset(str, 0, sizeof(str));
 
-    sprintf(str, "Z: %+04d", z_axis);
+    sprintf(str, "Z: %+04f", z_axis);
     Serial.println(str);
     memset(str, 0, sizeof(str));
 
-    sprintf(str, "Roll: %+04d", roll);
+    sprintf(str, "Roll: %+04f", roll);
     Serial.println(str);
     memset(str, 0, sizeof(str));
 
-    sprintf(str, "Pitch: %+04d", pitch);
+    sprintf(str, "Pitch: %+04f", pitch);
     Serial.println(str);
     memset(str, 0, sizeof(str));
 
-    sprintf(str, "Yaw: %+04d", yaw);
+    sprintf(str, "Yaw: %+04f", yaw);
     Serial.println(str);
     memset(str, 0, sizeof(str));
 
