@@ -30,14 +30,17 @@ class Hexapod_Serial
 private:
     char buffer[MAX_BUF];          // where we store the message until we get a ';'
     int sofar = 0;                 // how much is in the buffer
-    double x_axis, y_axis, z_axis, roll, pitch, yaw; // positions
+    int x_axis, y_axis, z_axis, roll, pitch, yaw; // positions
     char mode_abs = 1;             // absolute mode?
     long line_number = 0;
+    char str[20];
 
     void ready();
     void processCommand();
     double parseNumber(const char code, double val);
     void output(const char code, double val);
+    void scaleAndConstrain(int *value, int range);
+    void logAxes(void);
 
 public:
     Hexapod_Serial();

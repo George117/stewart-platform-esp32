@@ -107,85 +107,28 @@ void Hexapod_Serial::serialRead()
             buffer[sofar] = 0;
 
             x_axis = (buffer[0]<<8) | (buffer[1]);
+            scaleAndConstrain(&x_axis, X_RAN);
+
             y_axis = (buffer[2]<<8) | (buffer[3]);
+            scaleAndConstrain(&y_axis, Y_RAN);
+
             z_axis = (buffer[4]<<8) | (buffer[5]);
+            scaleAndConstrain(&z_axis, Z_RAN);
+           
             roll = (buffer[6]<<8) | (buffer[7]);
+            scaleAndConstrain(&roll, ROLL_RAN);
+
             pitch = (buffer[8]<<8) | (buffer[9]);
+            scaleAndConstrain(&pitch, PITCH_RAN);
+
             yaw = (buffer[10]<<8) | (buffer[11]);
+            scaleAndConstrain(&yaw, YAW_RAN);
 
-            x_axis = (x_axis/100)-40;
-            if(x_axis > X_RAN){
-                x_axis = X_RAN;
-            }
-            if(x_axis<-X_RAN){
-                x_axis = -X_RAN;
-            }
+            logAxes();
 
-            y_axis = (y_axis/100)-40;
-            if(y_axis > Y_RAN){
-                y_axis = Y_RAN;
-            }
-            if(y_axis<-Y_RAN){
-                y_axis = -Y_RAN;
-            }
-
-
-            z_axis = (z_axis/100)-40;
-            if(z_axis > Z_RAN){
-                z_axis = Z_RAN;
-            }
-            if(z_axis<-Z_RAN){
-                z_axis = -Z_RAN;
-            }
-
-            roll = (roll/100)-40;
-            if(roll > ROLL_RAN){
-                roll = ROLL_RAN;
-            }
-            if(roll<-ROLL_RAN){
-                roll = -ROLL_RAN;
-            }
-
-            pitch = (pitch/100)-40;
-            if(pitch > PITCH_RAN){
-                pitch = PITCH_RAN;
-            }
-            if(pitch<-PITCH_RAN){
-                pitch = -PITCH_RAN;
-            }
-
-
-            yaw = (yaw/100)-40;
-            if(yaw > YAW_RAN){
-                yaw = YAW_RAN;
-            }
-            if(yaw<-YAW_RAN){
-                yaw = -YAW_RAN;
-            }
-
-             char str[20];
-            // sprintf(str, "%04d", x_axis);
-            // Serial.println(str);
-
-            // sprintf(str, "%04d", y_axis);
-            // Serial.println(str);
-
-            // sprintf(str, "%04d", z_axis);
-            // Serial.println(str);
-
-            sprintf(str, "%04d", roll);
-            Serial.println(str);
-
-            // sprintf(str, "%04d", pitch);
-            // Serial.println(str);
-
-            // sprintf(str, "%04d", yaw);
-            // Serial.println(str);
-
-            memset(buffer, '0', sizeof(buffer));
             sofar = 0;
 
-            uint8_t movOK = hx_servo.calcServoAngles({x_axis, y_axis, z_axis, roll*0.017453, pitch*0.017453, yaw*0.017453}, servo_angles);
+            uint8_t movOK = hx_servo.calcServoAngles({(double)x_axis, (double)y_axis, (double)z_axis, roll*DEG_TO_RAD, pitch*DEG_TO_RAD, yaw*DEG_TO_RAD}, servo_angles);
             hx_servo.updateServos(movOK);
         }
     }
@@ -216,4 +159,46 @@ void Hexapod_Serial::printSplashScreen()
     Serial.print(F("HEXAPOD_CONFIG:   "));
     Serial.println(HEXAPOD_CONFIG);
     Serial.println("##########################\n\n");
+}
+
+
+void Hexapod_Serial::scaleAndConstrain(int *value, int range) 
+{
+    *value = (*value / 100) - 40;
+    if (*value > range) {
+        *value = range;
+    }
+    if (*value < -range) {
+        *value = -range;
+    }
+}
+
+void Hexapod_Serial::logAxes(void)
+{
+    sprintf(str, "X: %+04d", x_axis);
+    Serial.println(str);
+    memset(str, 0, sizeof(str));
+
+    sprintf(str, "Y: %+04d", y_axis);
+    Serial.println(str);
+    memset(str, 0, sizeof(str));
+
+    sprintf(str, "Z: %+04d", z_axis);
+    Serial.println(str);
+    memset(str, 0, sizeof(str));
+
+    sprintf(str, "Roll: %+04d", roll);
+    Serial.println(str);
+    memset(str, 0, sizeof(str));
+
+    sprintf(str, "Pitch: %+04d", pitch);
+    Serial.println(str);
+    memset(str, 0, sizeof(str));
+
+    sprintf(str, "Yaw: %+04d", yaw);
+    Serial.println(str);
+    memset(str, 0, sizeof(str));
+
+    Serial.println("");
+    memset(buffer, 0, sizeof(buffer));
 }
