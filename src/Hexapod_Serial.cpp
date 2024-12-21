@@ -37,7 +37,7 @@ Hexapod_Serial::Hexapod_Serial()
 void Hexapod_Serial::ready()
 {
     sofar = 0;              // Clear input buffer.
-    Serial.println(F(">")); // Signal ready to receive input.
+    Serial2.println(F(">")); // Signal ready to receive input.
 }
 
 /**
@@ -46,6 +46,7 @@ void Hexapod_Serial::ready()
 void Hexapod_Serial::setupSerial()
 {
     Serial.begin(BAUD_RATE);
+    Serial2.begin(BAUD_RATE);
     ready();
 }
 
@@ -56,9 +57,9 @@ void Hexapod_Serial::setupSerial()
  */
 void Hexapod_Serial::output(const char code, double val)
 {
-    Serial.print(code);
-    Serial.print(val);
-    Serial.print(" ");
+    Serial2.print(code);
+    Serial2.print(val);
+    Serial2.print(" ");
 }
 
 /**
@@ -124,7 +125,7 @@ void Hexapod_Serial::serialRead()
             yaw = (buffer[10]<<8) | (buffer[11]);
             scaleAndConstrain(&yaw, YAW_RAN);
 
-            logAxes();
+            //logAxes();
 
             sofar = 0;
 
@@ -134,31 +135,40 @@ void Hexapod_Serial::serialRead()
     }
 }
 
+
+/**
+ *
+ */
+void Hexapod_Serial::serialWrite()
+{
+  Serial2.println("Hello World");
+}
+
 /**
  *
  */
 void Hexapod_Serial::printSplashScreen()
 {
-    Serial.println("\n\n##########################");
-    Serial.print(F("PROJECT NAME:     "));
-    Serial.println(PROJECT_NAME);
-    Serial.print(F("PROJECT VERSION:  "));
-    Serial.println(PROJECT_VERSION);
-    Serial.print(F("FILE NAME:        "));
-    Serial.println(__FILE__);
-    Serial.print(F("PROJECT PATH:     "));
-    Serial.println(PROJECT_PATH);
-    Serial.print(F("COMPILATION DATE: "));
-    Serial.println(COMPILATION_DATE);
-    Serial.print(F("COMPILATION TIME: "));
-    Serial.println(COMPILATION_TIME);
-    Serial.print(F("PYTHON VERSION:   "));
-    Serial.println(PYTHON_VERSION);
-    Serial.print(F("PYTHON PATH:      "));
-    Serial.println(PYTHON_PATH);
-    Serial.print(F("HEXAPOD_CONFIG:   "));
-    Serial.println(HEXAPOD_CONFIG);
-    Serial.println("##########################\n\n");
+    Serial2.println("\n\n##########################");
+    Serial2.print(F("PROJECT NAME:     "));
+    Serial2.println(PROJECT_NAME);
+    Serial2.print(F("PROJECT VERSION:  "));
+    Serial2.println(PROJECT_VERSION);
+    Serial2.print(F("FILE NAME:        "));
+    Serial2.println(__FILE__);
+    Serial2.print(F("PROJECT PATH:     "));
+    Serial2.println(PROJECT_PATH);
+    Serial2.print(F("COMPILATION DATE: "));
+    Serial2.println(COMPILATION_DATE);
+    Serial2.print(F("COMPILATION TIME: "));
+    Serial2.println(COMPILATION_TIME);
+    Serial2.print(F("PYTHON VERSION:   "));
+    Serial2.println(PYTHON_VERSION);
+    Serial2.print(F("PYTHON PATH:      "));
+    Serial2.println(PYTHON_PATH);
+    Serial2.print(F("HEXAPOD_CONFIG:   "));
+    Serial2.println(HEXAPOD_CONFIG);
+    Serial2.println("##########################\n\n");
 }
 
 
@@ -176,29 +186,29 @@ void Hexapod_Serial::scaleAndConstrain(double *value, int range)
 void Hexapod_Serial::logAxes(void)
 {
     sprintf(str, "X: %+04f", x_axis);
-    Serial.println(str);
+    Serial2.println(str);
     memset(str, 0, sizeof(str));
 
     sprintf(str, "Y: %+04f", y_axis);
-    Serial.println(str);
+    Serial2.println(str);
     memset(str, 0, sizeof(str));
 
     sprintf(str, "Z: %+04f", z_axis);
-    Serial.println(str);
+    Serial2.println(str);
     memset(str, 0, sizeof(str));
 
     sprintf(str, "Roll: %+04f", roll);
-    Serial.println(str);
+    Serial2.println(str);
     memset(str, 0, sizeof(str));
 
     sprintf(str, "Pitch: %+04f", pitch);
-    Serial.println(str);
+    Serial2.println(str);
     memset(str, 0, sizeof(str));
 
     sprintf(str, "Yaw: %+04f", yaw);
-    Serial.println(str);
+    Serial2.println(str);
     memset(str, 0, sizeof(str));
 
-    Serial.println("");
+    Serial2.println("");
     memset(buffer, 0, sizeof(buffer));
 }

@@ -46,5 +46,6 @@ public:
     Hexapod_Serial();
     void setupSerial();
     void serialRead();
+    void serialWrite();
     void printSplashScreen();
 };

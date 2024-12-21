@@ -76,7 +76,7 @@ void Hexapod_Nunchuck::stopIfNotConnected()
     if (true /*digitalRead(NUNCHUCK_ATT_PIN)*/)
         return;
 
-    Serial.println(F(
+    Serial2.println(F(
         "\nNUNCHUCK NOT CONNECTED!"
         "\nENSURE THAT ESP32 IO4 PIN IS CONNECTED TO NUNCHUCK ATT PIN OR TO VCC."
         "\nABORTING."));
@@ -144,8 +144,8 @@ void Hexapod_Nunchuck::nunchuckControl()
             joyMode = 0;
         else if (joyMode < 0)
             joyMode = JOYMODEMAX;
-        Serial.print("JOYSTICK MODE = ");
-        Serial.println(joyMode);
+        Serial2.print("JOYSTICK MODE = ");
+        Serial2.println(joyMode);
 
         // Set new limits.
         if (joyMode == 0)
@@ -233,24 +233,24 @@ void Hexapod_Nunchuck::nunchuckControl()
 
 #if SEND_NUNCHUCK_INFO_TO_SERIAL
     // Send nunchuck info to serial.
-    Serial.print("joy_x = ");
-    Serial.print(nck.joy_x);
+    Serial2.print("joy_x = ");
+    Serial2.print(nck.joy_x);
 
-    Serial.print(" | joy_y = ");
-    Serial.print(nck.joy_y);
+    Serial2.print(" | joy_y = ");
+    Serial2.print(nck.joy_y);
 
-    Serial.print(" | btn_c = ");
-    Serial.print(nck.btn_c);
+    Serial2.print(" | btn_c = ");
+    Serial2.print(nck.btn_c);
 
-    Serial.print(" | pitch_angle = ");
-    Serial.print(nck.pitch_angle);
+    Serial2.print(" | pitch_angle = ");
+    Serial2.print(nck.pitch_angle);
 
-    Serial.print(" | roll_angle = ");
-    Serial.print(nck.roll_angle);
+    Serial2.print(" | roll_angle = ");
+    Serial2.print(nck.roll_angle);
 
-    Serial.print(" | joyMode = ");
-    Serial.print(joyMode);
+    Serial2.print(" | joyMode = ");
+    Serial2.print(joyMode);
 
-    Serial.print("\n");
+    Serial2.print("\n");
 #endif
 }

@@ -12,4 +12,8 @@ public:
     void setupIMU(void);
     void printIMU(void);
     void sendSerialIMU(void);
+
+    xyzFloat gValue;
+    xyzFloat gyr;
+    float resultantG;
 };

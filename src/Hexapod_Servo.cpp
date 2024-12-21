@@ -76,19 +76,19 @@ void Hexapod_Servo::updateServosIncremental(int8_t movOK, unsigned long safetyWa
     }
     const int increment = 5;
     int8_t moving = B00111111;
-    Serial.println("### MOVING START ");
+    Serial2.println("### MOVING START ");
 
-    Serial.println("### ANGLE PREV ");
+    Serial2.println("### ANGLE PREV ");
     for (uint8_t sid = 0; sid < NB_SERVOS; sid++)
     {
-        Serial.printf("%4d ", _servo_angles_prev[sid].us);
+        Serial2.printf("%4d ", _servo_angles_prev[sid].us);
     }
-    Serial.println("\n### ANGLE TARGET ");
+    Serial2.println("\n### ANGLE TARGET ");
     for (uint8_t sid = 0; sid < NB_SERVOS; sid++)
     {
-        Serial.printf("%4d ", _servo_angles_target[sid].us);
+        Serial2.printf("%4d ", _servo_angles_target[sid].us);
     }
-    Serial.println("");
+    Serial2.println("");
 
     while (moving)
     {
@@ -106,7 +106,7 @@ void Hexapod_Servo::updateServosIncremental(int8_t movOK, unsigned long safetyWa
                 bitClear(moving, sid);
             }
 
-            Serial.printf("%4d ", _servo_angles_prev[sid].us);
+            Serial2.printf("%4d ", _servo_angles_prev[sid].us);
         }
         // Write to servos.
         for (uint8_t sid = 0; sid < NB_SERVOS; sid++)
@@ -116,10 +116,10 @@ void Hexapod_Servo::updateServosIncremental(int8_t movOK, unsigned long safetyWa
 
         delay(5);
 
-        Serial.print("\n");
+        Serial2.print("\n");
     }
 
-    Serial.println(" MOVING DONE ###");
+    Serial2.println(" MOVING DONE ###");
 #endif
 }
 
@@ -159,7 +159,7 @@ void Hexapod_Servo::updateServos(int8_t movOK, unsigned long safetyWait_ms)
         {
             Serial.printf("%4d ", servo_angles[sid].pwm_us);
         }
-        Serial.println("");
+        Serial2.println("");
 #endif
     }
     else
@@ -168,11 +168,11 @@ void Hexapod_Servo::updateServos(int8_t movOK, unsigned long safetyWait_ms)
         hx_gpio.setBuiltInLED();
         nbMovNOK++;
         NOKrate = (nbMovNOK / nbMov) * (double)100.0;
-        Serial.printf("%10lu", millis());
-        Serial.printf(" | BAD MOVE | movOK = %d", movOK);
-        Serial.printf(" | NB MOV = %10.0f", nbMov);
-        Serial.printf(" | NOK rate = %4.1f %%", NOKrate);
-        Serial.print("\n");
+        Serial2.printf("%10lu", millis());
+        Serial2.printf(" | BAD MOVE | movOK = %d", movOK);
+        Serial2.printf(" | NB MOV = %10.0f", nbMov);
+        Serial2.printf(" | NOK rate = %4.1f %%", NOKrate);
+        Serial2.print("\n");
     }
 
     // Switch off LED.
@@ -184,40 +184,40 @@ void Hexapod_Servo::updateServos(int8_t movOK, unsigned long safetyWait_ms)
  */
 void Hexapod_Servo::printServoAngles()
 {
-    Serial.print("\nSERVO COORD        = ");
-    Serial.print(getHX_X());
-    Serial.print(" ");
-    Serial.print(getHX_Y());
-    Serial.print(" ");
-    Serial.print(getHX_Z());
-    Serial.print(" ");
-    Serial.print(getHX_A());
-    Serial.print(" ");
-    Serial.print(getHX_B());
-    Serial.print(" ");
-    Serial.print(getHX_C());
+    Serial2.print("\nSERVO COORD        = ");
+    Serial2.print(getHX_X());
+    Serial2.print(" ");
+    Serial2.print(getHX_Y());
+    Serial2.print(" ");
+    Serial2.print(getHX_Z());
+    Serial2.print(" ");
+    Serial2.print(getHX_A());
+    Serial2.print(" ");
+    Serial2.print(getHX_B());
+    Serial2.print(" ");
+    Serial2.print(getHX_C());
 
-    Serial.print("\nSERVO_ANGLES (rad) = ");
+    Serial2.print("\nSERVO_ANGLES (rad) = ");
     for (uint8_t sid = 0; sid < NB_SERVOS; sid++)
     {
-        Serial.print(servo_angles[sid].deg);
-        Serial.print(" ");
+        Serial2.print(servo_angles[sid].deg);
+        Serial2.print(" ");
     }
 
-    Serial.print("\nSERVO_ANGLES (us) = ");
+    Serial2.print("\nSERVO_ANGLES (us) = ");
     for (uint8_t sid = 0; sid < NB_SERVOS; sid++)
     {
-        Serial.print(servo_angles[sid].us);
-        Serial.print(" ");
+        Serial2.print(servo_angles[sid].us);
+        Serial2.print(" ");
     }
 
-    Serial.print("\nSERVO_ANGLES (debug) = ");
+    Serial2.print("\nSERVO_ANGLES (debug) = ");
     for (uint8_t sid = 0; sid < NB_SERVOS; sid++)
     {
-        Serial.print(servo_angles[sid].debug);
-        Serial.print(" ");
+        Serial2.print(servo_angles[sid].debug);
+        Serial2.print(" ");
     }
-    Serial.print("\n");
+    Serial2.print("\n");
 }
 
 /**
@@ -225,19 +225,19 @@ void Hexapod_Servo::printServoAngles()
  */
 void Hexapod_Servo::printJointAndServoAxisCoord()
 {
-    Serial.println("P_COORDS");
+    Serial2.println("P_COORDS");
     for (uint8_t sid = 0; sid < NB_SERVOS; sid++)
     {
-        Serial.print(P_COORDS[sid][0]);
-        Serial.print("  ");
-        Serial.println(P_COORDS[sid][1]);
+        Serial2.print(P_COORDS[sid][0]);
+        Serial2.print("  ");
+        Serial2.println(P_COORDS[sid][1]);
     }
 
-    Serial.println("\nB_COORDS");
+    Serial2.println("\nB_COORDS");
     for (uint8_t sid = 0; sid < NB_SERVOS; sid++)
     {
-        Serial.print(B_COORDS[sid][0]);
-        Serial.print("  ");
-        Serial.println(B_COORDS[sid][1]);
+        Serial2.print(B_COORDS[sid][0]);
+        Serial2.print("  ");
+        Serial2.println(B_COORDS[sid][1]);
     }
 }

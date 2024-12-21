@@ -39,7 +39,7 @@ Hexapod_Demo::Hexapod_Demo()
  */
 void Hexapod_Demo::demoMov_MinMaxAllAxis()
 {
-    Serial.println("\n########## demoMov_MinMaxAllAxis START ##########");
+    Serial2.println("\n########## demoMov_MinMaxAllAxis START ##########");
 
     const platform_t coords[] = {
         // X
@@ -75,13 +75,13 @@ void Hexapod_Demo::demoMov_MinMaxAllAxis()
     int8_t movOK = -1;
     for (uint8_t cnt = 0; cnt < COUNT_OF(coords); cnt++)
     {
-        Serial.print("cnt = ");
-        Serial.println(cnt);
+        Serial2.print("cnt = ");
+        Serial2.println(cnt);
         movOK = hx_servo.calcServoAngles(coords[cnt], servo_angles);
         hx_servo.updateServos(movOK);
         delay(1000);
     }
-    Serial.println("demoMov_MinMaxAllAxis DONE");
+    Serial2.println("demoMov_MinMaxAllAxis DONE");
 }
 
 /**
@@ -93,7 +93,7 @@ void Hexapod_Demo::demoMov_circles(uint8_t nb_turn = 1)
         return;
 
     // Move in circles in the horizontal plane.
-    Serial.println("\n########## demoMov_circles START ##########");
+    Serial2.println("\n########## demoMov_circles START ##########");
 
     const uint8_t nb_points = 90;
     const double radius = HX_X_MAX;
@@ -122,7 +122,7 @@ void Hexapod_Demo::demoMov_circles(uint8_t nb_turn = 1)
             // hx_servo.updateServosIncremental(movOK, 0UL);
         }
     }
-    Serial.println("demoMov_circles DONE");
+    Serial2.println("demoMov_circles DONE");
 }
 
 /**
@@ -130,7 +130,7 @@ void Hexapod_Demo::demoMov_circles(uint8_t nb_turn = 1)
  */
 void Hexapod_Demo::demoMov_shakeHeave()
 {
-    Serial.println("\n########## demoMov_shakeHeave START ##########");
+    Serial2.println("\n########## demoMov_shakeHeave START ##########");
     double shakeVal = HX_Z_MIN;
     int8_t movOK = -1;
     const uint32_t wait = 200;
@@ -168,7 +168,7 @@ void Hexapod_Demo::demoMov_shakeHeave()
     movOK = hx_servo.home(servo_angles);
     hx_servo.updateServos(movOK);
 
-    Serial.println("demoMov_shakeHeave DONE");
+    Serial2.println("demoMov_shakeHeave DONE");
 }
 
 /**
@@ -176,7 +176,7 @@ void Hexapod_Demo::demoMov_shakeHeave()
  */
 void Hexapod_Demo::testNaN()
 {
-    Serial.println("\n########## TEST NaN ##########");
+    Serial2.println("\n########## TEST NaN ##########");
     int8_t movOK;
     platform_t coords[] = {
         {-33.0, 11.0, -15.0, 17.0, -5.7, 5.7},
@@ -185,8 +185,8 @@ void Hexapod_Demo::testNaN()
     {
         movOK = hx_servo.calcServoAngles(coords[coord_id], servo_angles);
         hx_servo.printServoAngles();
-        Serial.print("movOK = ");
-        Serial.println(movOK);
+        Serial2.print("movOK = ");
+        Serial2.println(movOK);
     }
 }
 
@@ -196,15 +196,15 @@ void Hexapod_Demo::testNaN()
 void Hexapod_Demo::testCalculations()
 {
     hx_servo.calcServoAngles({0, 0, 0, 0, 0, 0}, servo_angles);
-    Serial.print("\n0, 0, 0, 0, 0, 0 ");
+    Serial2.print("\n0, 0, 0, 0, 0, 0 ");
     hx_servo.printServoAngles();
 
     hx_servo.calcServoAngles({0, 0, HX_Z_MAX, 0, 0, 0}, servo_angles);
-    Serial.print("\n0, 0, HX_Z_MAX, 0, 0, 0");
+    Serial2.print("\n0, 0, HX_Z_MAX, 0, 0, 0");
     hx_servo.printServoAngles();
 
     hx_servo.calcServoAngles({0, 0, HX_Z_MIN, 0, 0, 0}, servo_angles);
-    Serial.print("\n0, 0, HX_Z_MIN, 0, 0, 0");
+    Serial2.print("\n0, 0, HX_Z_MIN, 0, 0, 0");
     hx_servo.printServoAngles();
 }
 
@@ -213,7 +213,7 @@ void Hexapod_Demo::testCalculations()
  */
 void Hexapod_Demo::testCalcSpeed()
 {
-    //Serial.println("\n########## TEST CALCULATION SPEED ##########");
+    //Serial2.println("\n########## TEST CALCULATION SPEED ##########");
     unsigned long T1 = 0, T2 = 0, TTot = 0, dT = 0, Tmin = 10000, Tmax = 0;
     const int nb_intervals = 2;
     const double divide = 3;
@@ -237,7 +237,7 @@ void Hexapod_Demo::testCalcSpeed()
                             // hx_servo.calcServoAnglesAlgo3({hx_x, hx_y, hx_z, hx_a, hx_b, hx_c}, servo_angles);
                             T2 = micros();
                             dT = T2 - T1;
-                            // Serial.println(dT);
+                            // Serial2.println(dT);
                             if (dT > Tmax)
                                 Tmax = dT;
                             else if (dT < Tmin)
@@ -251,18 +251,18 @@ void Hexapod_Demo::testCalcSpeed()
         }
     }
     /*
-    Serial.print("Algorithm                 = ");
-    Serial.println(ALGO);
-    Serial.print("nb iterations             = ");
-    Serial.println(count);
-    Serial.print("total time elapsed (us)   = ");
-    Serial.println(TTot);
-    Serial.print("time per calculation (us) = ");
-    Serial.println(TTot / count);
-    Serial.print("Tmin (us)                 = ");
-    Serial.println(Tmin);
-    Serial.print("Tmax (us)                 = ");
-    Serial.println(Tmax);
+    Serial2.print("Algorithm                 = ");
+    Serial2.println(ALGO);
+    Serial2.print("nb iterations             = ");
+    Serial2.println(count);
+    Serial2.print("total time elapsed (us)   = ");
+    Serial2.println(TTot);
+    Serial2.print("time per calculation (us) = ");
+    Serial2.println(TTot / count);
+    Serial2.print("Tmin (us)                 = ");
+    Serial2.println(Tmin);
+    Serial2.print("Tmax (us)                 = ");
+    Serial2.println(Tmax);
     */
 }
 
@@ -379,53 +379,53 @@ void Hexapod_Demo::findMinMax()
 
     timeToFindMinMax = millis() - T1;
 /*
-    Serial.println("\n########## MIN / MAX ##########");
+    Serial2.println("\n########## MIN / MAX ##########");
 
-    Serial.print("\nHX_X_MIN = ");
-    Serial.print(HX_X_MIN);
-    Serial.println(" mm");
-    Serial.print("HX_X_MAX = ");
-    Serial.print(HX_X_MAX);
-    Serial.println(" mm");
+    Serial2.print("\nHX_X_MIN = ");
+    Serial2.print(HX_X_MIN);
+    Serial2.println(" mm");
+    Serial2.print("HX_X_MAX = ");
+    Serial2.print(HX_X_MAX);
+    Serial2.println(" mm");
 
-    Serial.print("\nHX_Y_MIN = ");
-    Serial.print(HX_Y_MIN);
-    Serial.println(" mm");
-    Serial.print("HX_Y_MAX = ");
-    Serial.print(HX_Y_MAX);
-    Serial.println(" mm");
+    Serial2.print("\nHX_Y_MIN = ");
+    Serial2.print(HX_Y_MIN);
+    Serial2.println(" mm");
+    Serial2.print("HX_Y_MAX = ");
+    Serial2.print(HX_Y_MAX);
+    Serial2.println(" mm");
 
-    Serial.print("\nHX_Z_MIN = ");
-    Serial.print(HX_Z_MIN);
-    Serial.println(" mm");
-    Serial.print("HX_Z_MAX = ");
-    Serial.print(HX_Z_MAX);
-    Serial.println(" mm");
+    Serial2.print("\nHX_Z_MIN = ");
+    Serial2.print(HX_Z_MIN);
+    Serial2.println(" mm");
+    Serial2.print("HX_Z_MAX = ");
+    Serial2.print(HX_Z_MAX);
+    Serial2.println(" mm");
 
-    Serial.print("\nHX_A_MIN = ");
-    Serial.print(degrees(HX_A_MIN));
-    Serial.println(" deg");
-    Serial.print("HX_A_MAX = ");
-    Serial.print(degrees(HX_A_MAX));
-    Serial.println(" deg");
+    Serial2.print("\nHX_A_MIN = ");
+    Serial2.print(degrees(HX_A_MIN));
+    Serial2.println(" deg");
+    Serial2.print("HX_A_MAX = ");
+    Serial2.print(degrees(HX_A_MAX));
+    Serial2.println(" deg");
 
-    Serial.print("\nHX_B_MIN = ");
-    Serial.print(degrees(HX_B_MIN));
-    Serial.println(" deg");
-    Serial.print("HX_B_MAX = ");
-    Serial.print(degrees(HX_B_MAX));
-    Serial.println(" deg");
+    Serial2.print("\nHX_B_MIN = ");
+    Serial2.print(degrees(HX_B_MIN));
+    Serial2.println(" deg");
+    Serial2.print("HX_B_MAX = ");
+    Serial2.print(degrees(HX_B_MAX));
+    Serial2.println(" deg");
 
-    Serial.print("\nHX_C_MIN = ");
-    Serial.print(degrees(HX_C_MIN));
-    Serial.println(" deg");
-    Serial.print("HX_C_MAX = ");
-    Serial.print(degrees(HX_C_MAX));
-    Serial.println(" deg");
+    Serial2.print("\nHX_C_MIN = ");
+    Serial2.print(degrees(HX_C_MIN));
+    Serial2.println(" deg");
+    Serial2.print("HX_C_MAX = ");
+    Serial2.print(degrees(HX_C_MAX));
+    Serial2.println(" deg");
 
-    Serial.print("\ntimeToFindMinMax = ");
-    Serial.print(timeToFindMinMax);
-    Serial.println(" ms");
+    Serial2.print("\ntimeToFindMinMax = ");
+    Serial2.print(timeToFindMinMax);
+    Serial2.println(" ms");
     */
 }
 

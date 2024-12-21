@@ -90,7 +90,8 @@ void setup()
 void loop()
 {
 #if ENABLE_IMU_READ
-    hx_imu.printIMU();
+    //hx_imu.printIMU();
+    hx_imu.sendSerialIMU();
 #endif
 
 #if ENABLE_NUNCHUCK_READ
